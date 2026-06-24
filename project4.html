@@ -1,0 +1,161 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simple Task App</title>
+<style>
+body { font-family: Arial; background: url('img1.jpg') no-repeat center fixed; background-size: cover; padding: 20px; }
+#mainDiv { max-width: 400px; margin: auto; }
+button { padding: 10px 20px; margin: 5px; cursor: pointer; border: none; border-radius: 5px; }
+input { width: 100%; padding: 8px; margin: 5px 0; box-sizing: border-box; }
+.taskItem { background: white; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; }
+.hidden { display: none; }
+.done { background: #d4edda; text-decoration: line-through; }
+.editBtn { background: transparent; color: black; padding: 5px 8px; font-size: 20px; }
+.binBtn { background: transparent; color: black; padding: 5px 8px; font-size: 20px; }
+.doneBtn { background: transparent; color: black; padding: 5px 8px; font-size: 20px; }
+.addBtn { background: red; color: white; }
+.saveBtn { background: blue; color: white; }
+</style>
+</head>
+<body>
+
+<script>
+let mainDiv = document.createElement("div");
+mainDiv.id = "mainDiv";
+document.body.appendChild(mainDiv);
+
+let heading = document.createElement("h2");
+heading.innerText = "Task List";
+heading.style.textAlign = "center";
+mainDiv.appendChild(heading);
+
+let addBtnDiv = document.createElement("div");
+addBtnDiv.id = "addBtnDiv";
+addBtnDiv.style.textAlign = "center";
+mainDiv.appendChild(addBtnDiv);
+
+let addBtn = document.createElement("button");
+addBtn.id = "addBtn";
+addBtn.className = "addBtn";
+addBtn.innerText = "ADD";
+addBtnDiv.appendChild(addBtn);
+
+let formDiv = document.createElement("div");
+formDiv.id = "formDiv";
+formDiv.className = "hidden";
+mainDiv.appendChild(formDiv);
+
+let taskBox = document.createElement("input");
+taskBox.type = "text";
+taskBox.id = "taskBox";
+taskBox.placeholder = "Enter task";
+formDiv.appendChild(taskBox);
+
+let descBox = document.createElement("input");
+descBox.type = "text";
+descBox.id = "descBox";
+descBox.placeholder = "Enter description";
+formDiv.appendChild(descBox);
+
+let saveBtn = document.createElement("button");
+saveBtn.id = "saveBtn";
+saveBtn.className = "saveBtn";
+saveBtn.innerText = "Save";
+formDiv.appendChild(saveBtn);
+
+let taskList = document.createElement("div");
+taskList.id = "taskList";
+mainDiv.appendChild(taskList);
+
+let editingItem = null;
+formDiv.classList.add("hidden");
+
+addBtn.onclick = function() {
+    addBtnDiv.classList.add("hidden");
+    formDiv.classList.remove("hidden");
+    taskBox.focus();
+}
+
+saveBtn.onclick = function() {
+    let task = taskBox.value.trim();
+    let desc = descBox.value.trim();
+
+    if(task == "" || desc == "") {
+        alert("Please enter task and description");
+        return;
+    }
+
+    if(editingItem != null) {
+        editingItem.querySelector(".taskText").innerText = task;
+        editingItem.querySelector(".descText").innerText = desc;
+        editingItem = null;
+    } else {
+        addTask(task, desc);
+    }
+
+    taskBox.value = "";
+    descBox.value = "";
+    formDiv.classList.add("hidden");
+    addBtnDiv.classList.remove("hidden");
+}
+
+function addTask(task, desc) {
+    let div = document.createElement("div");
+    div.className = "taskItem";
+
+    let h3 = document.createElement("h3");
+    h3.className = "taskText";
+    h3.innerText = task;
+    div.appendChild(h3);
+
+    let p = document.createElement("p");
+    p.className = "descText";
+    p.innerText = desc;
+    div.appendChild(p);
+
+    let editBtn = document.createElement("button");
+    editBtn.className = "editBtn";
+    editBtn.innerText = "✏️";
+    div.appendChild(editBtn);
+
+    let binBtn = document.createElement("button");
+    binBtn.className = "binBtn";
+    binBtn.innerText = "🗑️";
+    div.appendChild(binBtn);
+
+    let doneBtn = document.createElement("button");
+    doneBtn.className = "doneBtn";
+    doneBtn.innerText = "✅";
+    div.appendChild(doneBtn);
+
+    editBtn.onclick = function() {
+        taskBox.value = h3.innerText;
+        descBox.value = p.innerText;
+        editingItem =div;
+        formDiv.classList.remove("hidden");
+        addBtnDiv.classList.add("hidden");
+        div.appendChild(formdiv);
+    }
+
+    binBtn.onclick = function() {
+        div.remove();
+    }
+
+    doneBtn.onclick = function() {
+        div.classList.toggle("done");
+        if(doneBtn.innerText == "✅") {
+            doneBtn.innerText = "↩️";
+        } else {
+            doneBtn.innerText = "✅";
+        }
+    }
+
+    taskList.appendChild(div);
+}
+</script>
+
+</body>
+</html>
