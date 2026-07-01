@@ -1,0 +1,144 @@
+<html>
+    <head>
+        <title> task arrangement</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+    <body>
+        <script>
+
+let addbutton = document.createElement("button");
+addbutton.innerText = "Add";
+addbutton.className =
+    "m-4 px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700";
+document.body.appendChild(addbutton);
+
+let showTaskBtn = document.createElement("button");
+showTaskBtn.innerText = "Show Tasks";
+showTaskBtn.className =
+    "m-4 px-4 py-2 bg-purple-600 text-white rounded-lg shadow hover:bg-purple-700";
+document.body.appendChild(showTaskBtn);
+
+
+let frame1 = document.createElement("div");
+frame1.className =
+    "hidden m-4 p-4 w-80 bg-white rounded-xl shadow-lg border border-gray-200";
+
+document.body.appendChild(frame1);
+
+let frame2 = document.createElement("div");
+frame2.className =
+    "hidden m-4 p-4 w-80 bg-gray-50 rounded-xl shadow border border-gray-200";
+document.body.appendChild(frame2);
+let noTaskMsg = document.createElement("p");
+noTaskMsg.innerText = "No Task Added";
+noTaskMsg.className =
+    "text-center text-gray-500";
+frame2.appendChild(noTaskMsg);
+
+
+let taskname = document.createElement("input");
+taskname.placeholder = "Task Name";
+taskname.className =
+    "w-full mb-2 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400";
+frame1.appendChild(taskname);
+
+let taskdesc = document.createElement("textarea");
+taskdesc.placeholder = "Task Description";
+taskdesc.className =
+    "w-full mb-3 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400";
+
+frame1.appendChild(taskdesc);
+
+let addtaskbutton = document.createElement("button");
+addtaskbutton.innerText = "Add Task";
+addtaskbutton.className =
+    "w-full py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600";
+
+frame1.appendChild(addtaskbutton);
+
+let taskCount = 0;
+
+addbutton.addEventListener("click", () => {
+
+    frame1.classList.remove("hidden")
+    frame2.classList.add("hidden");
+});
+
+
+showTaskBtn.addEventListener("click", () => {
+    if(frame2.classList.contains("hidden")){
+    frame1.classList.add("hidden");
+
+    frame2.classList.remove("hidden");
+    showTaskBtn.innerHTML="Hide Tasks";
+
+    if (taskCount === 0) {
+        noTaskMsg.classList.remove("hidden");
+    } else {
+        noTaskMsg.classList.add("hidden");
+    }
+}
+    else{
+        frame2.classList.add("hidden");
+        showTaskBtn.innerText="Show Tasks";
+    }
+});
+
+addtaskbutton.addEventListener("click", () => {
+    let heading = taskname.value.trim();
+    let description = taskdesc.value.trim();
+    if (heading === "" || description === "") {
+        alert("Please fill all fields");
+        return;
+    }
+
+    let taskcard = document.createElement("div");
+    taskcard.className =
+        "bg-white p-3 mb-3 rounded-lg border border-gray-300 shadow";
+    let title = document.createElement("h3");
+    title.innerText = heading;
+    title.className =
+        "font-bold text-lg mb-2";
+
+    let desc = document.createElement("p");
+    if (description.length > 50) {
+        let shortText =
+            description.substring(0, 50) + "...";
+        desc.innerText = shortText;
+        let readbtn = document.createElement("span");
+        readbtn.innerText = " Read More";
+        readbtn.className =
+            "text-blue-600 cursor-pointer ml-2";
+        let expanded = false;
+        readbtn.addEventListener("click", () => {
+            if (!expanded) {
+                desc.innerText = description;
+                readbtn.innerText = " Read Less";
+                desc.appendChild(readbtn);
+                expanded = true;
+            } else {
+                desc.innerText = shortText;
+                readbtn.innerText = " Read More";
+                desc.appendChild(readbtn);
+                expanded = false;
+            }
+        });
+        desc.appendChild(readbtn);
+    } else {
+
+        desc.innerText = description;
+    }
+
+    taskcard.appendChild(title);
+    taskcard.appendChild(desc);
+    frame2.appendChild(taskcard);
+    taskCount++;
+
+    noTaskMsg.classList.add("hidden");
+    taskname.value = "";
+    taskdesc.value = "";
+
+});
+</script>
+</body>
+</html>

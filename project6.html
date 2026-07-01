@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital Clock</title>
+
+<style>
+    body{
+        margin:0;
+        height:100vh;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        background:#222;
+        font-family:Arial, sans-serif;
+    }
+
+    .clock-container{
+        text-align:center;
+        color:white;
+    }
+
+    #clock{
+        background:#000;
+        color:#00ff99;
+        padding:20px 40px;
+        border-radius:10px;
+        font-size:50px;
+        font-weight:bold;
+        box-shadow:0 0 15px #00ff99;
+    }
+
+    #day{
+        margin-top:15px;
+        font-size:24px;
+    }
+
+    #date{
+        margin-top:5px;
+        font-size:20px;
+        color:#ddd;
+    }
+</style>
+</head>
+<body>
+
+<div class="clock-container">
+    <div id="clock">00:00:00</div>
+    <div id="day"></div>
+    <div id="date"></div>
+</div>
+
+<script>
+function updateClock() {
+    const now = new Date();
+
+    let hours = String(now.getHours()).padStart(2, "0");
+    let minutes = String(now.getMinutes()).padStart(2, "0");
+    let seconds = String(now.getSeconds()).padStart(2, "0");
+
+    document.getElementById("clock").innerText =
+        `${hours}:${minutes}:${seconds}`;
+
+    const days = [
+        "Sunday","Monday","Tuesday",
+        "Wednesday","Thursday","Friday","Saturday"
+    ];
+
+    document.getElementById("day").innerText =
+        days[now.getDay()];
+
+    document.getElementById("date").innerText =
+        now.toLocaleDateString("en-GB", {
+            day: "2-digit",
+            month: "long",
+            year: "numeric"
+        });
+}
+
+updateClock();
+setInterval(updateClock, 1000);
+</script>
+
+</body>
+</html>
