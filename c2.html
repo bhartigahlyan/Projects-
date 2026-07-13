@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Circle Clock</title>
+<style>
+body {
+    background: linear-gradient(135deg, #090a12 0%, #0c0712 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+.clock {
+    width: 300px;
+    height: 300px;
+    border: 8px solid white;
+    border-radius: 50%;
+    position: relative;
+    background: rgba(13, 2, 2, 0.1);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 30px rgba(0,0,0,0.3);
+}
+
+/* Center ka dot */
+.clock::after {
+    content: '';
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background: #ff4d6d;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+}
+
+/* Numbers 12, 3, 6, 9 */
+.number {
+    position: absolute;
+    color: white;
+    font-size: 24px;
+    font-weight: 600;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+.num12 { top: 15px; left: 50%; transform: translateX(-50%); }
+.num3  { top: 50%; right: 20px; transform: translateY(-50%); }
+.num6  { bottom: 15px; left: 50%; transform: translateX(-50%); }
+.num9  { top: 50%; left: 20px; transform: translateY(-50%); }
+
+/* Needles */
+.hand {
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    transform-origin: bottom center;
+    border-radius: 10px;
+}
+
+.hour-hand {
+    width: 6px;
+    height: 80px;
+    background: white;
+    margin-left: -3px;
+}
+
+.minute-hand {
+    width: 4px;
+    height: 110px;
+    background: white;
+    margin-left: -2px;
+}
+
+.second-hand {
+    width: 2px;
+    height: 120px;
+    background: #ff4d6d;
+    margin-left: -1px;
+}
+</style>
+</head>
+<body>
+
+<div class="clock">
+    <div class="number num12">12</div>
+    <div class="number num3">3</div>
+    <div class="number num6">6</div>
+    <div class="number num9">9</div>
+
+    <div class="hand hour-hand" id="hour"></div>
+    <div class="hand minute-hand" id="minute"></div>
+    <div class="hand second-hand" id="second"></div>
+</div>
+
+<script>
+function updateClock() {
+    const now = new Date();
+    
+    const hours = now.getHours();
+    const minutes = now.getMinutes();
+    const seconds = now.getSeconds();
+
+    // Degree nikalna
+    const secondDeg = (seconds / 60) * 360; // 60 sec = 360 deg
+    const minuteDeg = (minutes / 60) * 360 + (seconds/60)*6; // minute me second ka effect
+    const hourDeg = (hours % 12 / 12) * 360 + (minutes/60)*30; // hour me minute ka effect
+
+    document.getElementById('second').style.transform = `rotate(${secondDeg}deg)`;
+    document.getElementById('minute').style.transform = `rotate(${minuteDeg}deg)`;
+    document.getElementById('hour').style.transform = `rotate(${hourDeg}deg)`;
+}
+
+// Har 1 second me update karo
+setInterval(updateClock, 1000);
+updateClock(); // page load hote hi chala do
+</script>
+
+</body>
+</html>
